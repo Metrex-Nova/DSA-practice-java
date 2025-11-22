@@ -1,0 +1,9 @@
+class Solution {
+    public int largestElement(int[] nums) {
+        int a = Integer.MIN_VALUE;
+        for(int x : nums){
+            a = Math.max(a,x);
+        }
+        return a;
+    }
+}
