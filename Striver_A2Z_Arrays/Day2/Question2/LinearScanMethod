@@ -1,0 +1,21 @@
+//Given an integer array nums, move all the 0's to the end of the array. The relative order of the other elements must remain the same.
+//This must be done in place, without making a copy of the array.
+
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int index = 0;
+        for(int x : nums){
+            if(x != 0){
+                nums[index] = x;
+                index++;
+            }
+        }
+        while(index < nums.length){
+            nums[index] = 0;
+            index++;
+        }
+    }
+}
+
+//TC: O(n)
+//SC: O(1)
