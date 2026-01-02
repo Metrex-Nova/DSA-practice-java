@@ -1,0 +1,18 @@
+class Solution {
+    public int[] unionArray(int[] nums1, int[] nums2) {
+        Set<Integer> st = new TreeSet<>();
+        for(int num:nums1){
+            st.add(num);
+        }
+        for(int num:nums2){
+            st.add(num);
+        }
+        int[] result = new int[st.size()];
+        int i = 0;
+        for(int val : st){
+            result[i] = val;
+            i++;
+        }
+        return result;
+    }
+}
