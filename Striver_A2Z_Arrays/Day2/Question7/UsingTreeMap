@@ -1,0 +1,19 @@
+class Solution {
+    public int[] unionArray(int[] nums1, int[] nums2) {
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        int n = nums1.length;
+        int m = nums2.length;
+        for(int i = 0; i<n; i++){
+            map.put(nums1[i], map.getOrDefault(nums1[i], 0) + 1);
+        }
+        for(int j = 0; j<m; j++){
+            map.put(nums2[j], map.getOrDefault(nums2[j], 0) + 1);
+        }
+        int[] keys = new int[map.size()];
+        int i = 0;
+        for (int k : map.keySet()) {
+            keys[i++] = k;
+        }
+        return keys;
+    }
+}
