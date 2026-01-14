@@ -1,0 +1,66 @@
+Define a structure Student with fields: ID(int), Name(string), and Marks(float array of 3 subjects).
+Write a program to:
+1. Read details for N students.
+2. Calculate the Average for each student.
+3. Print a "Merit List" of students who scored above 75% average.
+4. Identify and print the details of the Topper (Highest Average).
+
+
+
+#include <stdio.h>
+
+struct Student {
+    int id;
+    char name[50];
+    float marks[3];
+    float average;
+};
+
+int main(){
+    int N;
+    int topperIndex = 0;
+    float sum;
+    printf("Enter number of students: ");
+    scanf("%d", &N);
+    
+    struct Student s[N];
+    
+    for(int i = 0; i < N; i++){
+        
+        printf("\nEnter details of student %d\n", i+1);
+        printf("Name: ");
+        scanf(" %[^\n]", s[i].name);
+        
+        printf("id: ");
+        scanf("%d", &s[i].id);
+        
+        sum = 0;
+        for(int j = 0; j < 3; j++){
+            printf("Marks of subject %d: ", j+1);
+            scanf("%f", &s[i].marks[j]);
+            sum = sum + s[i].marks[j];
+        }
+        s[i].average = sum/3;
+    }
+    // Merit List code
+    printf("\n---Merit List---\n");
+    for(int i = 0; i<N; i++){
+        if(s[i].average > 75){
+            printf("ID: %d\n", s[i].id);
+            printf("Name: %s\n", s[i].name);
+            printf("Average: %.2f\n\n", s[i].average);
+        }
+    }
+    // Finding Topper
+    for(int i = 1; i<N;i++){
+        if(s[i].average>s[topperIndex].average){
+            topperIndex = i; 
+        }
+    }
+    printf("\n---Topper---\n");
+    printf("Id: %d\n", s[topperIndex].id);
+    printf("Name: %s\n", s[topperIndex].name);
+    printf("Average: %.2f\n", s[topperIndex].average);
+    
+    return 0;
+}
