@@ -1,0 +1,80 @@
+Q8: The Array Rotator
+Description:
+Implement a menu-driven program (or two separate functions) that can rotate an array to the
+Left or to the Right by K positions.
+1. rotateLeft(arr, k): Shift elements left. First element moves to end.
+2. rotateRight(arr, k): Shift elements right. Last element moves to front.
+Note: K can be larger than N.
+Input Format:
+● N(Size)
+● N integers
+● D(Direction: 0 for Left, 1 for Right).
+● K(Number of shifts).
+Sample Test Case 1:
+Input:
+5
+1 2 3 4 5
+0
+1 (Left Rotate by 1)
+Output:
+2 3 4 5 1
+Sample Test Case 2:
+Input:
+3
+10 20 30
+1
+2 (Right Rotate by 2)
+Output:
+20 30 10
+
+
+
+
+
+// Online C compiler to run C program online
+#include <stdio.h>
+void reverse(int arr[], int start, int end){
+    while(start<end){
+    int temp = arr[start];
+    arr[start] = arr[end];
+    arr[end] = temp;
+    start++;
+    end--;
+    }
+}
+void left(int arr[], int k, int n){
+    k = k%n;
+    reverse(arr, 0, k-1);
+    reverse(arr, k, n-1);
+    reverse(arr, 0, n-1);
+}
+void right(int arr[], int k, int n){
+    k = k%n;
+    left(arr, n-k, n);
+}
+int main() {
+    int n;
+    printf("Please enter the size of the array: ");
+    scanf("%d", &n);
+    int arr[n];
+    for(int i = 0; i<n; i++){
+        printf("Please enter element %d of the Array: ", i+1);
+        scanf("%d", &arr[i]);
+    }
+    int d;
+    printf("Please enter the direction of rotation(0 for left, 1 for right: ");
+    scanf("%d", &d);
+    int k; 
+    printf("Please enter the steps of rotation: ");
+    scanf("%d", &k);
+    
+    if(d == 0){
+        left(arr, k, n);
+    } else{
+        right(arr, k, n);
+    }
+    for(int i  =0; i<n; i++){
+        printf("%d ", arr[i]);
+    }
+    return 0;
+}
