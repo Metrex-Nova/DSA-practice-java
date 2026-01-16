@@ -1,0 +1,85 @@
+Q5: Merge Sorted Arrays
+Description:
+Given two sorted arrays, merge them into a single sorted array.
+Constraint: You must use the efficient "Two Pointer" method, not just concatenating and running
+Bubble Sort.
+1. Compare the current elements of both arrays.
+2. Pick the smaller one and add it to the result.
+3. Repeat until one array is empty, then copy the rest.
+Input Format:
+● Size N1, sorted elements of Array 1.
+● Size N2, sorted elements of Array 2.
+Sample Test Case 1:
+Input:
+3
+1 3 5
+3
+2 4 6
+Output:
+1 2 3 4 5 6
+Sample Test Case 2:
+Input:
+2
+10 50
+3
+20 30 40
+
+
+
+
+
+
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+
+int main(){
+    printf("Hello World!");
+    int n1, n2;
+    printf("\n\nPlease enter the size of first array: ");
+    scanf("%d", &n1);
+    printf("Please enter the size of second array: ");
+    scanf("%d", &n2);
+    int A[n1];
+    int B[n2];
+    for(int i = 0; i<n1; i++){
+        printf("Please enter element %d of Array 1: ", i+1);
+        scanf("%d", &A[i]);
+    }
+    for(int j = 0; j<n2; j++){
+        printf("Please enter element %d of Array 2: ", j+1);
+        scanf("%d", &B[j]);
+    }
+    int i = 0, j = 0; 
+    char current = '`';
+    while(i<n1 && j<n2){
+        if((A[i] < B[j]) && A[i] != current){
+            printf("%d ", A[i]);
+            current = A[i];
+            i++;
+        }
+        else if((A[i] > B[j]) && B[j] != current){
+            printf("%d ", B[j]);
+            current = B[j];
+            j++;
+        }
+        else if(A[i] == B[j] && A[i] != current){
+            printf("%d ", A[i]);
+            current = A[i];
+            i++;
+            j++;
+        }
+    }
+    while(i<n1){
+        printf("%d ", A[i]);
+        i++;
+    }
+        
+    while(j<n2){
+        printf("%d", B[j]);
+        j++;
+    }
+
+    
+    return 0;
+}
