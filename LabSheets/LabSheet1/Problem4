@@ -1,0 +1,91 @@
+Q4: Set Operations
+Description:
+Given two arrays A and B of distinct integers, implement two functions:
+1. findUnion(): Print elements present in either A or B (no duplicates).
+2. findIntersection(): Print elements present in both A and B.
+Note: The output order does not matter.
+Input Format:
+● Size of A ( N1), elements of A.
+● Size of B ( N2), elements of B.
+Sample Test Case 1:
+Input:
+3
+1 2 3
+3
+2 3 4
+Output:
+Union: 1 2 3 4
+Intersection: 2 3
+Sample Test Case 2:
+Input:
+2
+10 20
+2
+30 40
+Output:
+Union: 10 20 30 40
+Intersection: (None)
+
+
+
+
+
+
+#include <stdio.h>
+
+int main() {
+    int n1, n2;
+
+    printf("Tell size of first Array: ");
+    scanf("%d", &n1);
+
+    printf("Tell size of second Array: ");
+    scanf("%d", &n2);
+
+    int A[n1], B[n2];
+
+    for(int i = 0; i < n1; i++){
+        printf("Write element %d of Array 1: ", i + 1);
+        scanf("%d", &A[i]);
+    }
+
+    for(int j = 0; j < n2; j++){
+        printf("Write element %d of Array 2: ", j + 1);
+        scanf("%d", &B[j]);
+    }
+
+    printf("\nUnion: ");
+    for(int k = 0; k < n1; k++){
+        printf("%d", A[k]);
+        if (k != n1 - 1) printf(" ");
+    }
+
+    for(int l = 0; l < n2; l++){
+        int found = 0;
+        for(int i = 0; i < n1; i++){
+            if(B[l] == A[i]){
+                found = 1;
+                break;
+            }
+        }
+        if(!found) {
+            printf(" %d", B[l]);
+        }
+    }
+
+    printf("\nIntersection: ");
+    int first = 1;
+    for(int i = 0; i < n1; i++){
+        for(int j = 0; j < n2; j++){
+            if(A[i] == B[j]){
+                if (!first) printf(" ");
+                printf("%d", A[i]);
+                first = 0;
+                break;
+            }
+        }
+    }
+
+    printf("\n");
+    return 0;
+}
