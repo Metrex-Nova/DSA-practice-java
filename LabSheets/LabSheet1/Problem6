@@ -1,0 +1,54 @@
+Q6: Frequency Counter
+Description:
+Given an array of N integers, write a program to count the frequency of each distinct element.
+● You must handle negative numbers.
+● The output should display the number and how many times it appears.
+● Hint: You can sort the array first to make counting easier, or use a visited array.
+Input Format:
+● N(Size), followed by N integers.
+Sample Test Case 1:
+Input:
+8
+10 20 20 10 10 20 5 20
+Output:
+10 -> 3
+20 -> 4
+5 -> 1
+Sample Test Case 2:
+Input:
+3
+1 1 1
+Output:
+1 -> 3
+
+
+#include<stdio.h>
+int main(){
+    printf("Hello World");
+    int n;
+    printf("\n\nEnter the size of array: ");
+    scanf("%d", &n);
+    int A[n];
+    int visited[n];
+    for(int j = 0; j<n; j++){
+        visited[j] = 0;
+    }
+    for(int i = 0; i<n; i++){
+        printf("Please enter the element number %d of the array: ", i+1);
+        scanf("%d", &A[i]);
+    }
+    int count;
+    for(int i = 0;i<n; i++){
+        if(visited[i] == 1){
+            continue;
+        }
+        count = 1;
+        for (int j = i+1; j<n; j++){
+            if(A[i] == A[j]){
+                visited[j] = 1;
+                count++;
+            } 
+        }
+        printf("%d->%d\n",A[i], count);
+    }
+}
