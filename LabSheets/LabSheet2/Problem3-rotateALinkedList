@@ -1,0 +1,71 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+#include<stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* next;
+};
+
+struct Node* createNode(int data){
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->data = data;
+    node-> next = NULL;
+    return node;
+}
+
+struct Node* rotateRight(struct Node* head, int n, int k){
+    k = k % n;
+    if(k == 0 || head == NULL || head->next == NULL){
+        return head;
+    }
+    struct Node* tail = head;
+    while(tail->next!= NULL){
+        tail = tail->next;
+    }
+    tail->next = head;
+    int steps = n - k;
+    struct Node* newHead = head;
+    for(int i = 0; i<steps; i++){
+        newHead = newHead->next;
+    }
+    struct Node* newTail = head;
+    for(int j = 1; j<steps; j++){
+        newTail = newTail->next;
+    }
+    newTail->next = NULL;
+    return newHead;
+}
+
+int main() {
+    // Write C code here
+    printf("Try programiz.pro\n");
+    int n;
+    int k;
+    printf("Please enter the number of elements of the linked list: ");
+    scanf("%d", &n);
+    printf("Please enter the number of rotations required: ");
+    scanf("%d", &k);
+    int data;
+    struct Node* head = NULL;
+    struct Node* temp = NULL;
+    for(int i = 0; i<n; i++){
+        printf("Please enter element %d of the Linked List: ", i+1);
+        scanf("%d", &data);
+        struct Node* node = createNode(data);
+        if(head == NULL){
+            head = node;
+            temp = node;
+        }
+        else{
+            temp->next = node;
+            temp = node;
+        }
+    }
+    head = rotateRight(head, n, k);
+    while (head != NULL) {
+        printf("%d ", head->data);
+        head = head->next;
+    }
+    return 0;
+}
