@@ -1,0 +1,35 @@
+#include<stdio.h>
+#include<stdbool.h>
+#include<stdlib.h>
+int main(){
+    printf("Hello World!\n");
+    int n;
+    printf("Please enter the number of elements in the array: ");
+    scanf("%d", &n);
+    int arr[n];
+    for(int i = 0; i<n ; i++){
+        printf("Please enter element %d of the array: ", i+1);
+        scanf("%d", &arr[i]);
+    }
+    for(int i = 0; i<n - 1; i++){
+        for(int j = 0; j<n - i - 1; j++){
+            if(arr[j] > arr[j+1]){
+                int temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+    }
+    int even;
+    int odd;
+    for(int i= 0; i<n; i++){
+        if(i%2 == 0 && arr[i]%2 == 0){
+            even++;
+        }
+        else if(i%2 != 0 && arr[i]%2 != 0){
+            odd++;
+        }
+    }
+    printf("%d %d", even, odd);
+    return 0;
+}
