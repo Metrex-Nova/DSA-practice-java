@@ -1,0 +1,39 @@
+#include<stdio.h>
+#include<stdbool.h>
+#include<stdlib.h>
+int main(){
+    printf("Hello World!\n");
+    int n;
+    printf("Please enter the number of elements in the array: ");
+    scanf("%d", &n);
+    int k;
+    printf("please enter the maximum difference: ");
+    scanf("%d", &k);
+    int arr[n];
+    for(int i = 0; i<n ; i++){
+        printf("Please enter element %d of the array: ", i+1);
+        scanf("%d", &arr[i]);
+    }
+    for(int i = 0; i<n - 1; i++){
+        for(int j = 0; j<n - i - 1; j++){
+            if(arr[j] > arr[j+1]){
+                int temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+    }
+    int i = 0;
+    int maxCount = 0;
+    for(int j = 0; j< n ; j++){
+        while(arr[j] - arr[i] > k){
+            i++;
+        }
+        int windowSize = j - i + 1;
+        if(windowSize>maxCount){
+            maxCount = windowSize;
+        }
+    }
+    printf("%d", maxCount);
+    return 0;
+}
