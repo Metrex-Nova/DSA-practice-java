@@ -1,0 +1,83 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+#include<stdlib.h>
+#include<stdbool.h>
+struct Node{
+    int data;
+    struct Node* next;
+};
+
+struct Node* createNode(int data){
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node-> data = data;
+    node-> next = NULL;
+    return node;
+}
+void printList(struct Node* head){
+    while(head != NULL){
+        printf("%d ", head->data);
+        head = head-> next;
+    }
+}
+int main() {
+    // Write C code here
+    printf("Try programiz.pro\n");
+    int n;
+    printf("Please enter the size of linked list: ");
+    scanf("%d", &n);
+    int data;
+    struct Node* head = NULL;
+    struct Node* temp = NULL;
+    for(int i = 0; i<n; i++){
+        printf("Please enter %d node of the linked list: ", i+1);
+        scanf("%d", &data);
+        struct Node* node = createNode(data);
+        if(head == NULL){
+            head = node;
+            temp = node;
+        } else{
+            temp-> next = node;
+            temp = temp->next;
+        }
+    }
+    printList(head);
+    struct Node* even = NULL;
+    struct Node* odd = NULL;
+    struct Node* newHead = NULL;
+    struct Node* oddHead = NULL;
+    bool flag = false;
+    struct Node* curr = head;
+    while(curr != NULL){
+        if(curr->data %2 != 0 && odd == NULL){
+            odd = curr;
+            oddHead = curr;
+            curr = curr->next;
+        }
+        else if(curr-> data %2 != 0 && odd != NULL){
+            odd -> next = curr;
+            odd = curr;
+            curr = curr->next;
+        }
+        else if(curr-> data %2 == 0 && even == NULL){
+            even = curr;
+            newHead = curr;
+            curr = curr-> next;
+            flag = true;
+        }
+        else{
+            even-> next = curr;
+            even = curr;
+            curr= curr-> next;
+            flag= true;
+        }
+    }
+    if(flag == true){
+        even-> next = oddHead;
+        printf("\n");
+        printList(newHead);
+    } else{
+        printf("\nThere is no even number in the linked list.\n");
+        printList(head);
+    }
+    return 0;
+}
