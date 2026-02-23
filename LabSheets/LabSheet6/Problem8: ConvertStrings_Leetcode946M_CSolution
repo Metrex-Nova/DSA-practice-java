@@ -1,0 +1,66 @@
+Problem Description:
+You are given two sequences of integers: Sequence1 (Input) and Sequence2 (Target).
+Your task is to determine if Sequence2 can be generated from Sequence1 using a single stack.
+You process Sequence1 from left to right. For each element in Sequence1, you must push it
+onto the stack. At any point, if the top of the stack matches the next required element in
+Sequence2, you may pop it to match the target sequence.
+Input Format:
+Line 1: N (Length of the sequences)
+Line 2: N integers (Sequence1)
+Line 3: N integers (Sequence2)
+Output Format:
+Print the sequence of operations ("Push" or "Pop") required to transform Sequence1 into
+Sequence2.
+If the transformation is impossible, print "Impossible".
+
+
+
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+
+bool canGenerateSequence(int arr[], int brr[], int n, char result[][5]){
+    int stack[n];
+    int p = 0;
+    int top = -1;
+    int j  = 0;
+    for(int i = 0; i<n; i++){
+        stack[++top] = arr[i];
+        strcpy(result[p++], "push");
+        while(top>=0 && stack[top] == brr[j]){
+            strcpy(result[p++], "pop");    
+            top--;
+            j++;
+        }
+    }
+    return j == n;
+}
+
+int main() {
+    printf("Hello World\n");
+    int n;
+    printf("Enter size of sequences: ");
+    scanf("%d", &n);
+    int arr[n];
+    int brr[n];
+    for(int i = 0; i<n; i++){
+        printf("Please enter element %d of sequence 1: ", i+1);
+        scanf("%d", &arr[i]);
+    }
+    for(int i = 0; i<n; i++){
+        printf("Please enter element %d of sequence 2: ", i+1);
+        scanf("%d", &brr[i]);
+    }
+    char result[2*n][5];
+    if(canGenerateSequence(arr, brr, n, result)){
+        printf("Yes.\n");
+        for(int i= 0; i<2*n; i++){
+            printf("%s ", result[i]);
+        }
+        printf("\n");
+    } else{
+        printf("Impossible.\n");
+    }
+    return 0;
+}
