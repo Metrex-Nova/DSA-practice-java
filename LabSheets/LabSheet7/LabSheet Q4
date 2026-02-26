@@ -1,0 +1,120 @@
+Problem 4: Hit the Target
+Problem Description:
+Given an M x N grid containing three numbers: 0, 1, 2. You want to travel from the top-left
+corner (0,0) to the target cell containing 2. You have to follow the following rules while travelling:
+● Cells marked with 0 are empty cells and can be visited.
+● Cells marked with 1 are blocked cells and can NOT be visited.
+● Cells marked with 2 are the Target Cells.
+● You can move Up, Down, Left, or Right.
+● You cannot move beyond boundaries.
+Find the minimum number of points to move upon to reach the target cell containing 2 from (0,0)
+(including start and target). It is guaranteed that such a path will always exist.
+Note: Starting Point (0,0) will always be marked with 0.
+
+
+
+import java.util.*;
+class Solution{
+    public int hitTheTarget(int grid[][]){
+        int n = grid.length;
+        int m = grid[0].length;
+        int size = n*m;
+        if(grid[0][0] == 1){
+            return -1;
+        }
+        if(grid[0][0] == 2){
+            return 1;
+        }
+        int[][] dirs = {{0,1}, {0,-1}, {1,0} ,{-1 ,0}};
+        
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{0,0,1});
+        grid[0][0] = 1;
+        while(!queue.isEmpty()){
+            int[] curr = queue.poll();
+            int  r = curr[0];
+            int  c = curr[1];
+            int dist = curr[2];
+            for(int[] d: dirs){
+                int nr = r + d[0];
+                int nc = c + d[1];
+                if(nr<0 || nr>=n || nc<0 || nc>=m){
+                    continue;
+                }
+                if(grid[nr][nc] == 1){
+                    continue;
+                }
+                if(grid[nr][nc] == 2){
+                    return dist  + 1;
+                }
+                grid[nr][nc] = 1;
+                queue.offer(new int[]{nr, nc, dist + 1});
+            }
+        }
+        return -1;
+    }
+}
+class Main {
+    public static void main(String[] args) {
+
+        // Test Case 1: Simple path exists
+        // 0 = open, 1 = wall, 2 = target
+        // Expected: 5  (path: (0,0)->(1,0)->(2,0)->(2,1)->(2,2) then target at (2,2))
+        int[][] grid1 = {
+            {0, 1, 0},
+            {0, 1, 0},
+            {0, 0, 2}
+        };
+        Solution s1 = new Solution();
+        System.out.println("Test 1: " + s1.hitTheTarget(grid1));  // Expected: 5
+
+        // Test Case 2: Start is a wall
+        // Expected: -1
+        int[][] grid2 = {
+            {1, 0, 0},
+            {0, 0, 0},
+            {0, 0, 2}
+        };
+        Solution s2 = new Solution();
+        System.out.println("Test 2: " + s2.hitTheTarget(grid2));  // Expected: -1
+
+        // Test Case 3: Start is the target itself
+        // Expected: 1
+        int[][] grid3 = {
+            {2, 0, 0},
+            {0, 0, 0},
+            {0, 0, 0}
+        };
+        Solution s3 = new Solution();
+        System.out.println("Test 3: " + s3.hitTheTarget(grid3));  // Expected: 1
+
+        // Test Case 4: No path to target (blocked by walls)
+        // Expected: -1
+        int[][] grid4 = {
+            {0, 1, 0},
+            {1, 1, 0},
+            {0, 0, 2}
+        };
+        Solution s4 = new Solution();
+        System.out.println("Test 4: " + s4.hitTheTarget(grid4));  // Expected: -1
+
+        // Test Case 5: Straight line path
+        // Expected: 4
+        int[][] grid5 = {
+            {0, 0, 0, 2}
+        };
+        Solution s5 = new Solution();
+        System.out.println("Test 5: " + s5.hitTheTarget(grid5));  // Expected: 4
+
+        // Test Case 6: Larger grid with winding path
+        // Expected: 7
+        int[][] grid6 = {
+            {0, 0, 1, 0},
+            {1, 0, 1, 0},
+            {1, 0, 0, 0},
+            {1, 1, 1, 2}
+        };
+        Solution s6 = new Solution();
+        System.out.println("Test 6: " + s6.hitTheTarget(grid6));  // Expected: 7
+    }
+}
