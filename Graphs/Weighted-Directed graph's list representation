@@ -1,0 +1,48 @@
+This Java code implements a directed weighted graph using an adjacency list representation. It defines a custom Edge class with dest (destination node) and weight attributes. 
+The program first reads two integers n (number of nodes) and e (number of edges), then reads e directed edges as triples (u, v, w) representing a directed edge from node u to node v with weight w.
+It creates an array of ArrayList<Edge> of size n+1 (index 0 unused), initializes each list, and adds the edge new Edge(v, w) only to adj[u] (no reverse edge, since the graph is directed). 
+Finally, it prints the adjacency list for nodes 1 through n, displaying each edge with its destination node and weight.
+
+
+
+
+import java.util.*;
+
+class Edge {
+    int dest;
+    int weight;
+    
+    Edge(int dest, int weight){
+        this.dest = dest;
+        this.weight = weight;
+    }
+}
+
+public class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int e = sc.nextInt();
+        
+        ArrayList<Edge>[] adj = new ArrayList[n+1];
+        
+        for(int i = 0; i<=n; i++){
+            adj[i] = new ArrayList<>();
+        }
+        
+        for(int i = 0; i<e; i++){
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            int w = sc.nextInt();
+            adj[u].add(new Edge(v, w));
+        }
+        for(int i = 0; i<n; i++){
+            System.out.print(i+1 + ": ");
+            for(Edge a : adj[i+1]){
+                System.out.print("(" + a.dest + ", weight=" + a.weight + ") ");
+            }
+            System.out.print("\n");
+        }
+        sc.close();
+    }
+}
