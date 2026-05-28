@@ -1,0 +1,56 @@
+This code solves the "Rotting Oranges" problem using BFS. It takes a 2D grid where 0 = empty cell, 1 = fresh orange, and 2 = rotten orange. 
+The algorithm first counts all fresh oranges and enqueues all initially rotten oranges. Then it performs a multi-source BFS level by level,
+where each level represents one minute of rotting. For each rotten orange, it spreads rot to adjacent (up, down, left, right) fresh oranges, converting them to rotten and enqueuing them. 
+The BFS continues until no more rotting occurs, tracking the number of minutes elapsed. Finally, it returns the total minutes if all fresh oranges have rotted, otherwise returns -1.
+
+Time Complexity: O(m × n) - each cell is processed at most once.
+Space Complexity: O(m × n) - for the queue in the worst case (e.g., all oranges rotten).
+
+import java.util.*;
+
+class Solution{
+    public int orangesRotting(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        Queue<int[]> q = new LinkedList<>();
+        int fresh = 0;
+        for(int i = 0; i<m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == 2){
+                    q.offer(new int[]{i, j});
+                }
+                else if(grid[i][j] == 1){
+                    fresh++;
+                }
+            }
+        }
+        if(fresh == 0){
+            return 0;
+        }
+        int minutes = 0;
+        int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        while(!q.isEmpty()){
+            int size = q.size();
+            boolean rottenThisMinute = false;
+            for(int k = 0; k<size; k++){
+                int[] cell = q.poll();
+                int r = cell[0];
+                int c = cell[1];
+                for(int[] d: dir){
+                    int nr = r + d[0];
+                    int nc = c + d[1];
+                    if(nr>=0 && nr<m && nc>=0 && nc<n && grid[nr][nc] == 1){
+                        grid[nr][nc] = 2;
+                        q.offer(new int[]{nr, nc});
+                        fresh--;
+                        rottenThisMinute = true;
+                    }
+                }
+            }
+            if(rottenThisMinute == true){
+                minutes++;
+            }
+        }
+        return fresh == 0 ? minutes : -1;
+    }
+}
