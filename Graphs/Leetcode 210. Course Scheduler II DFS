@@ -1,0 +1,52 @@
+This code returns the order of courses to take (topological ordering) using DFS-based topological sort with cycle detection.
+It builds a directed graph where an edge pre[1] → pre[0] means the prerequisite must be taken before the course. 
+The state array tracks three states: 0 = unvisited, 1 = visiting (in current recursion stack), and 2 = fully processed. For each unvisited course, DFS is performed:
+if a back edge (state 1) is found, a cycle is detected and an empty array is returned. After processing all neighbors, the node is marked 2 and added to the order list (post-order). 
+Once all nodes are processed, the list is reversed to get the correct topological order (courses before their dependents) and returned as an array. If a cycle is detected at any point, new int[0] is returned.
+
+Time Complexity: O(V + E) — each vertex and edge is processed once.
+Space Complexity: O(V) — for the recursion stack (up to V depth), state array, and order list, plus O(V + E) for the adjacency list.
+
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int n = numCourses;
+        List<Integer>[] graph = new ArrayList[n];
+        for(int i = 0 ;i<n; i++){
+            graph[i] = new ArrayList<>();
+        }
+        for(int[] pre : prerequisites) {
+            graph[pre[1]].add(pre[0]);
+        }
+        int[] state = new int[n];
+        List<Integer> order = new ArrayList<>();
+        for(int i = 0 ; i<n; i++){
+            if(!dfs(i, graph, state, order)){
+                return new int[0];
+            }
+        }
+        Collections.reverse(order);
+        int[] ans = new int[n];
+        for(int i = 0; i<n;i++){
+            ans[i] = order.get(i);
+        }
+        return ans;
+    }
+
+    private boolean dfs(int node, List<Integer>[] graph, int[] state, List<Integer> order){
+        if(state[node] == 1){
+            return false;
+        }
+        if(state[node] == 2){
+            return true;
+        }
+        state[node] = 1;
+        for(int nbr : graph[node]){
+            if(!dfs(nbr, graph, state, order)){
+                return false;
+            }
+        }
+        state[node] = 2;
+        order.add(node);
+        return true;
+    }
+}
