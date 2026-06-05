@@ -1,0 +1,43 @@
+This code determines if all courses can be finished given prerequisite constraints using Kahn's algorithm for topological sorting (BFS-based approach). 
+It builds a directed graph where an edge prerequisite → course means the prerequisite must be taken before the course, and computes the indegree (number of prerequisites) for each course.
+Courses with zero indegree are added to a queue, and as each course is "completed," its outgoing edges are removed by decrementing the indegree of dependent courses, adding them to the queue when their indegree reaches zero. 
+If the number of completed courses equals the total number of courses, true is returned (no cycle), otherwise false (cycle detected).
+
+Time Complexity: O(V + E) — where V = numCourse and E = number of prerequisites; each vertex and edge is processed once.
+Space Complexity: O(V + E) — for the adjacency list, indegree array, and queue.
+
+import java.util.*;
+class Solution {
+    public boolean canFinish(int numCourse, int[][] prerequisites) {
+        List<List<Integer>> graph = new ArrayList<>();
+        for(int i = 0 ; i<numCourse; i++){
+            graph.add(new ArrayList<>());
+        }
+        int[] indegree = new int[numCourse];
+        for(int[] pre : prerequisites){
+            int course = pre[0];
+            int prerequisite = pre[1];
+            graph.get(prerequisite).add(course);
+            indegree[course]++;
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0; i< numCourse; i++){
+            if(indegree[i] == 0){
+                q.offer(i);
+            }
+        }
+        int completed = 0;
+        while(!q.isEmpty()){
+            int curr = q.poll();
+            completed++;
+            for(int next : graph.get(curr)) {
+                indegree[next]--;
+                if(indegree[next] == 0){
+                    q.offer(next);
+                }
+            }
+        }
+        return (completed == numCourse);
+    }
+}
+
