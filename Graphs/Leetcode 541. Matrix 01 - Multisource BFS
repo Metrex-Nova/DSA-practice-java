@@ -1,0 +1,43 @@
+This code solves the "01 Matrix" problem, which finds the distance of each cell to the nearest 0 in a binary matrix.
+\It uses a multi-source BFS approach: all cells containing 0 are initially added to the queue with distance 0, while cells with 1 are marked as -1 (unvisited). 
+Then BFS propagates outward level by level, updating the distance for each 1 cell as dist[row][col] + 1 when first visited, ensuring each cell gets the shortest distance to any 0. 
+The BFS guarantees optimal distances because all 0 sources expand simultaneously. Finally, the distance matrix is returned.
+
+Time Complexity: O(m × n) - each cell is processed once.
+Space Complexity: O(m × n) - for the distance matrix and the queue (which can hold up to m×n cells in worst case).
+
+
+import java.util.*;
+class Solution{
+    public int[][] updateMatrix(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+        int[][] dist = new int[m][n];
+        Queue<int[]> q = new LinkedList<>();
+        for(int i = 0; i<m; i++){
+            for(int j = 0; j<n; j++){
+                if(mat[i][j] == 0){
+                    q.offer(new int[]{i, j});
+                } else{
+                    dist[i][j] = -1;
+                }
+            }
+        }
+        int[][] directions = {{-1,0}, {1,0}, {0,-1}, {0,1}};
+        while(!q.isEmpty()){
+            int[] curr = q.poll();
+            int row = curr[0];
+            int col = curr[1];
+            for(int[] dir: directions){
+                int newRow = row + dir[0];
+                int newCol = col + dir[1];
+                if(newRow >= 0 && newRow < m && newCol >= 0 && newCol < n && dist[newRow][newCol] == -1){
+                    dist[newRow][newCol] = dist[row][col] + 1;
+                    q.offer(new int[]{newRow, newCol});
+                }
+            }
+        }
+        return dist;
+    }
+}
+
