@@ -1,0 +1,75 @@
+This code solves the "Pacific Atlantic Water Flow" problem, which finds all cells from which water can flow to both the Pacific Ocean (top and left borders) and the Atlantic Ocean (bottom and right borders). 
+It uses BFS in reverse — starting from the ocean borders and flowing inward to higher or equal-height cells.
+Two BFS traversals are performed: one from Pacific borders (top row and left column) marking reachable cells, and another from Atlantic borders (bottom row and right column). 
+During each BFS, a cell is reachable from an ocean if it has a height ≥ the current cell (water flows uphill in reverse).
+Finally, cells marked true in both pacific and atlantic boolean matrices are added to the result list, as water from these cells can reach both oceans.
+
+Time Complexity: O(m × n) — each cell is processed at most twice (once per BFS).
+Space Complexity: O(m × n) — for the two boolean matrices and the two BFS queues.
+
+
+import java.util.*;
+
+class Solution {
+    public List<List<Integer>> pacificAtlantic(int[][] heights){
+        int m = heights.length;
+        int n = heights[0].length;
+        int[][] dir = {{0,1}, {0,-1}, {1,0},{-1,0}};
+        boolean[][] pacific = new boolean[m][n];        
+        Queue<int[]> pacQ = new LinkedList<>();        
+        for(int i = 0; i<m; i++){
+            pacific[i][0] = true;
+            pacQ.offer(new int[]{i,0});
+        }
+        for(int i = 0; i<n; i++){
+            pacific[0][i] = true;
+            pacQ.offer(new int[]{0,i});
+        }
+        while(!pacQ.isEmpty()){
+            int[] curr = pacQ.poll();
+            int pr = curr[0];
+            int pc = curr[1];
+            for(int[] d: dir){
+                int npr = pr + d[0];
+                int npc = pc + d[1];
+                if(npr>=0 && npr<m && npc>=0 && npc<n && pacific[npr][npc] == false && heights[npr][npc] >= heights[pr][pc]){
+                    pacific[npr][npc] = true;
+                    pacQ.offer(new int[]{npr,npc});
+                }
+            }
+        }
+
+        boolean[][] atlantic = new boolean[m][n];
+        Queue<int[]> atlQ = new LinkedList<>();
+        for(int i = 0; i<m; i++){
+            atlantic[i][n-1] = true;
+            atlQ.offer(new int[]{i, n-1});
+        }
+        for(int i = 0; i<n; i++){
+            atlantic[m-1][i] = true;
+            atlQ.offer(new int[]{m-1,i});
+        }
+        while(!atlQ.isEmpty()){
+            int[] curr = atlQ.poll();
+            int ar = curr[0];
+            int ac = curr[1];
+            for(int[] d: dir){
+                int nar = ar + d[0];
+                int nac = ac + d[1];
+                if(nar>=0 && nar<m && nac>=0 && nac<n && atlantic[nar][nac] == false && heights[nar][nac] >= heights[ar][ac]){
+                    atlantic[nar][nac] = true;
+                    atlQ.offer(new int[]{nar,nac});
+                }
+            }
+        }
+        List<List<Integer>> ans = new ArrayList<>();
+        for(int i = 0; i<m; i++){
+            for(int j = 0; j<n; j++){
+                if(pacific[i][j] == true && atlantic[i][j] == true){
+                    ans.add(Arrays.asList(i,j));
+                }
+            }
+        }
+        return ans;
+    }
+}
