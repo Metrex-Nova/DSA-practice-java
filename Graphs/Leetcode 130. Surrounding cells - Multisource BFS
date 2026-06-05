@@ -1,0 +1,60 @@
+This code solves the "Surrounded Regions" problem, which flips all 'O' regions completely surrounded by 'X' to 'X' while leaving 'O' regions connected to the boundary unchanged. 
+It uses BFS starting from boundary cells: first, all 'O's on the four borders are marked as '#' (temporary marker) and enqueued. 
+Then BFS propagates from these boundary 'O's to mark all connected 'O's as '#' (these are the ones not surrounded). 
+Finally, it scans the entire board: any remaining 'O' (unmarked) is truly surrounded and flipped to 'X', while all '#' markers are converted back to 'O'.
+
+Time Complexity: O(m × n) - each cell is processed at most once.
+Space Complexity: O(m × n) - for the queue in the worst case (e.g., entire board filled with 'O's connected to the boundary).
+
+import java.util.*;
+class Solution {
+    public void solve(char[][] board){
+        int m = board.length;
+        int n = board[0].length;
+        Queue<int[]> q = new LinkedList<>();
+        for(int i = 0; i < m; i++){
+            if(board[i][0] == 'O') {
+                board[i][0] = '#';
+                q.offer(new int[]{i, 0});
+            }
+            if(board[i][n-1] == 'O') {
+                board[i][n-1] = '#';
+                q.offer(new int[]{i, n-1});
+            }
+        }
+        for(int j = 0; j < n; j++){
+            if(board[0][j] == 'O'){
+                board[0][j] = '#';
+                q.offer(new int[]{0, j});
+            }
+            if(board[m-1][j] == 'O'){
+                board[m-1][j] = '#';
+                q.offer(new int[]{m-1, j});
+            }
+        }
+        int[][] dir = {{0,-1},{0,1},{1,0},{-1,0}};
+        while(!q.isEmpty()) {
+            int[] curr = q.poll();
+            int row = curr[0];
+            int col = curr[1];
+            for(int[] d : dir){
+                int nr = row + d[0];
+                int nc = col + d[1];
+                if(nr >= 0 && nr < m && nc >= 0 && nc < n && board[nr][nc] == 'O'){
+                    board[nr][nc] = '#';
+                    q.offer(new int[]{nr,nc});
+                }
+            }
+        }
+        for(int i = 0; i<m; i++){
+            for(int j = 0 ; j<n; j++){
+                if(board[i][j] == 'O'){
+                    board[i][j] = 'X';
+                }
+                else if(board[i][j] == '#'){
+                    board[i][j] = 'O';
+                }
+            }
+        }
+    }
+}
