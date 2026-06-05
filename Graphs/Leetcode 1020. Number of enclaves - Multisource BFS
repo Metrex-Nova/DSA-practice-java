@@ -1,0 +1,59 @@
+This code solves the "Number of Enclaves" problem, which counts the number of land cells (1s) that are not connected to the boundary of the grid.
+It uses BFS starting from boundary land cells: first, all 1s on the four borders are marked as 2 (visited) and enqueued. T
+hen BFS propagates from these boundary cells to mark all land cells connected to the boundary as 2.
+After the BFS completes, any remaining 1s in the grid are land cells that are completely surrounded by water (0s) and not connected to the boundary — these are the enclaves. 
+Finally, it iterates through the grid and counts all cells still containing 1, returning that count.
+
+Time Complexity: O(m × n) — each cell is processed at most once.
+Space Complexity: O(m × n) — for the queue in the worst case (e.g., entire grid filled with 1s connected to the boundary).
+
+class Solution {
+    public int numEnclaves(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        Queue<int[]> q = new LinkedList<>();
+        int[][] dir = {{0,-1},{0,1},{1,0},{-1,0}};
+        for(int i = 0; i<m; i++){
+            if(grid[i][0] == 1){
+                grid[i][0] = 2;
+                q.offer(new int[]{i,0});
+            }
+            if(grid[i][n-1] == 1){
+                grid[i][n-1] = 2;
+                q.offer(new int[]{i,n-1});
+            }
+        }
+        for(int i = 0; i<n; i++){
+            if(grid[0][i] == 1){
+                grid[0][i] = 2;
+                q.offer(new int[]{0,i});
+            }
+            if(grid[m-1][i] == 1){
+                grid[m-1][i] = 2; 
+                q.offer(new int[]{m-1,i});
+            }
+        }
+        while(!q.isEmpty()){
+            int[] curr = q.poll();
+            int row = curr[0];
+            int col = curr[1];
+            for(int[] d: dir){
+                int nr = row + d[0];
+                int nc = col + d[1];
+                if(nr>=0 && nr<m && nc>=0 && nc<n && grid[nr][nc] == 1){
+                    grid[nr][nc] =2;
+                    q.offer(new int[]{nr,nc});
+                }
+            }
+        }
+        int ans = 0;
+        for(int i = 0 ;i<m; i++){
+            for(int j = 0; j<n; j++){
+                if(grid[i][j] == 1){
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+}
