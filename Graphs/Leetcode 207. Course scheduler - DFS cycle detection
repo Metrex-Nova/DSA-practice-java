@@ -1,0 +1,44 @@
+This code determines if all courses can be finished given prerequisite constraints using DFS-based cycle detection. 
+It builds a directed graph where an edge pre[1] → pre[0] indicates the prerequisite must be taken before the course. 
+The state array tracks three states for each node: 0 = unvisited, 1 = visiting (currently in recursion stack), and 2 = fully processed (no cycle found). 
+For each unvisited course, DFS is performed; if a node in state 1 (back edge) is encountered, a cycle is detected and false is returned. 
+Otherwise, the algorithm proceeds and returns true if no cycles are found in the entire graph.
+
+Time Complexity: O(V + E) — each vertex and edge is visited once.
+Space Complexity: O(V) — for the recursion stack (up to V depth) and the state array, plus O(V + E) for the adjacency list.
+
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<Integer>[] graph = new ArrayList[numCourses];
+        for(int i = 0; i<numCourses; i++){
+            graph[i] = new ArrayList<>();
+        }
+        for(int[] pre : prerequisites) {
+            graph[pre[1]].add(pre[0]);
+        }
+
+        int[] state = new int[numCourses];
+        for(int course = 0; course < numCourses; course++){
+            if(!dfs(course, graph, state)){
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean dfs(int node, List<Integer>[] graph, int[] state){
+        if(state[node] == 1){
+            return false;
+        }
+        if(state[node] == 2){
+            return true;
+        }
+        state[node] = 1;
+        for(int nbr : graph[node]){
+            if(!dfs(nbr, graph, state)){
+                return false;
+            }
+        }
+        state[node] = 2;
+        return true;
+    }
+}
