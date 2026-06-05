@@ -1,0 +1,42 @@
+This code returns the order of courses to take (topological ordering) given prerequisite constraints using Kahn's algorithm (BFS-based topological sort). 
+It builds a directed graph where an edge pre[1] → pre[0] means the prerequisite must be taken before the course, and computes the indegree (number of prerequisites) for each course.
+All courses with zero indegree are added to a queue, then repeatedly a course is removed from the queue, appended to the result order,
+and its outgoing edges are "removed" by decrementing the indegree of neighboring courses — if any neighbor's indegree becomes zero, it is added to the queue.
+If the number of courses in the final order equals numCourses, the order array is returned; otherwise (cycle detected), an empty array is returned.
+
+Time Complexity: O(V + E) — where V = numCourses and E = number of prerequisites; each vertex and edge is processed once.
+Space Complexity: O(V + E) — for the adjacency list, indegree array, queue, and order array.
+
+
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        List<Integer>[] graph = new ArrayList[numCourses];
+        for(int i = 0; i<numCourses; i++){
+            graph[i] = new ArrayList<>();
+        }
+        int[] indegree = new int[numCourses];
+        for(int[] pre: prerequisites){
+            graph[pre[1]].add(pre[0]);
+            indegree[pre[0]]++;
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0; i<numCourses; i++){
+            if(indegree[i] == 0){
+                q.offer(i);
+            }
+        }
+        int[] order = new int[numCourses];
+        int idx = 0;
+        while(!q.isEmpty()) {
+            int curr = q.poll();
+            order[idx++] = curr;
+            for(int nbr : graph[curr]){
+                indegree[nbr]--;
+                if(indegree[nbr] == 0){
+                    q.offer(nbr);
+                }
+            }
+        }
+        return idx == numCourses ? order : new int[0];
+    }
+}
