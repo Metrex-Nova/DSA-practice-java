@@ -1,0 +1,32 @@
+This Java code builds a singly linked list with nodes containing values 5, 10, and 15, then prints them in order. It starts by creating node a (data=10) and setting head to point to a. Then node b (data=15) is created and linked as a.next = b, forming the list 10 → 15. Next, node c (data=5) is created with its next pointing to a using the parameterized constructor new Node(5, a), and head is updated to point to c, resulting in the list 5 → 10 → 15. Finally, the code traverses from head using a while loop, printing each node's data, which outputs: 5 10 15.
+
+import java.util.*;
+
+class Node {
+  int data;
+  Node next;
+  public Node(int data, Node next){
+      this.data = data;
+      this.next = next;
+  }
+  public Node(int data){
+      this.data = data;
+      this.next = null;
+  }
+}
+
+public class Main {
+    public static void main(String[] args) {
+      Node a = new Node(10);
+      Node head = a;
+      Node b = new Node(15);
+      a.next = b;
+      Node c = new Node(5, a);
+      head = c;
+      Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+    }
+}
