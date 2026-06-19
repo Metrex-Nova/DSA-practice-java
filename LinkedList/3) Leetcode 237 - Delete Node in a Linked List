@@ -1,0 +1,9 @@
+This code solves LeetCode 237: "Delete Node in a Linked List", which deletes a given node (not the tail) from a singly linked list without access to the head. Since we cannot traverse to the previous node to update its next pointer, the solution copies the value from the next node into the current node (node.val = node.next.val), then bypasses the next node by setting node.next = node.next.next. This effectively deletes the current node by overwriting it with the next node's data and removing the next node from the list. The node itself is not actually removed from memory, but the list no longer contains its original value, and the length effectively decreases by one. Note: This only works for non-tail nodes, and the problem guarantees the given node is not the tail.
+
+
+class Solution {
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+}
