@@ -1,0 +1,46 @@
+This Java code creates a singly linked list with 10 nodes containing values 10 through 100 (in steps of 10), then traverses the list from the head to count the nodes and print their values. It manually constructs the list by chaining next pointers from 10 to 100, then uses a while loop with a temp pointer to iterate through the list, incrementing a counter and printing each node's data. After traversal, it prints the total length (which is 10). The code demonstrates manual linked list construction, traversal, and counting.
+
+Time Complexity: O(n) — traverses all 10 nodes once.
+Space Complexity: O(1) — only uses a few references and a counter variable.
+
+import java.util.*;
+
+class Node {
+    int data;
+    Node next;
+
+    public Node(int data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+
+    public Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        Node head = new Node(10);
+        head.next = new Node(20);
+        head.next.next = new Node(30);
+        head.next.next.next = new Node(40);
+        head.next.next.next.next = new Node(50);
+        head.next.next.next.next.next = new Node(60);
+        head.next.next.next.next.next.next = new Node(70);
+        head.next.next.next.next.next.next.next = new Node(80);
+        head.next.next.next.next.next.next.next.next = new Node(90);
+        head.next.next.next.next.next.next.next.next.next = new Node(100);
+
+        Node temp = head;
+        int count = 0;
+        while (temp != null) {
+            count++;
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println("\nlength: "+ count);
+    }
+}
