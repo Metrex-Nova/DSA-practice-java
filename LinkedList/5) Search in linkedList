@@ -1,0 +1,54 @@
+This Java code defines a singly linked list with 10 nodes containing values 10 through 100, then searches for a specific value (110) in the list using a Find class with a findNode method. The findNode method traverses the list from the head, comparing each node's data with the target value; if found, it returns true, otherwise it continues until the end and returns false. Since 110 is not present in the list, the output is false.
+
+Time Complexity: O(n) — traverses all 10 nodes in the worst case.
+Space Complexity: O(1) — only uses a temporary reference variable.
+
+import java.util.*;
+
+class Node {
+    int data;
+    Node next;
+
+    public Node(int data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+
+    public Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class Find {
+    public boolean findNode(Node head, int val){
+        Node temp = head;
+        while(temp!=null){
+            if(temp.data == val){
+                return true;
+            }
+            temp = temp.next;
+        }
+        return false;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        Node head = new Node(10);
+        head.next = new Node(20);
+        head.next.next = new Node(30);
+        head.next.next.next = new Node(40);
+        head.next.next.next.next = new Node(50);
+        head.next.next.next.next.next = new Node(60);
+        head.next.next.next.next.next.next = new Node(70);
+        head.next.next.next.next.next.next.next = new Node(80);
+        head.next.next.next.next.next.next.next.next = new Node(90);
+        head.next.next.next.next.next.next.next.next.next = new Node(100);
+        
+        Find f = new Find();
+        System.out.println(f.findNode(head, 110));
+        
+    }
+}
