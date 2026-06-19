@@ -1,0 +1,25 @@
+import java.util.*;
+
+class Node {
+  int data;
+  Node next;
+  public Node(int data, Node next){
+      this.data = data;
+      this.next = next;
+  }
+  public Node(int data){
+      this.data = data;
+      this.next = null;
+  }
+}
+
+public class Main {
+    public static void main(String[] args) {
+      System.out.println("Hello, World!");
+      Node a = new Node(10);
+      System.out.println(a);
+      System.out.println(a.data);
+    }
+}
+
+This Java code defines a simple singly linked list Node class with two constructors and data/next fields. In the main method, it prints "Hello, World!", creates a Node object a with data 10 (its next is null by default), then prints the object reference a (memory address) and the value a.data (which is 10). The code demonstrates basic class definition, object instantiation, and field access in Java.
