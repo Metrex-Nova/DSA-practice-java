@@ -1,0 +1,43 @@
+This Java code creates a doubly linked list with 10 nodes containing values 10 through 100 (in steps of 10). It initializes the head node with data 10, then uses a for loop to create and append new nodes for values 20 to 100, properly linking each new node with next and prev pointers (the next of the current node points to the new node, and the prev of the new node points back to the current node). Finally, it traverses the list from head to the end, printing each node's data followed by " -> <- " to visually represent the bidirectional links. 
+
+import java.util.*;
+
+class Node {
+    int data;
+    Node next;
+    Node prev;
+
+    public Node(int data, Node next, Node prev) {
+        this.data = data;
+        this.next = next;
+        this.prev = prev;
+    }
+
+    public Node(int data) {
+        this.data = data;
+        this.next = null;
+        this.prev = null;
+    }
+}
+
+
+
+public class Main {
+    public static void main(String[] args) {
+
+        Node head = new Node(10);
+        Node curr = head;
+    
+        for (int i = 20; i <= 100; i += 10) {
+            Node newNode = new Node(i);
+            curr.next = newNode;
+            newNode.prev = curr;
+            curr = newNode;
+        }
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " -> <- ");
+            temp = temp.next;
+        }
+    }
+}
