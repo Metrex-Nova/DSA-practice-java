@@ -1,0 +1,42 @@
+This code finds all eventual safe nodes in a directed graph using Kahn's algorithm (reverse topological sort). A node is safe if all paths starting from it eventually lead to a terminal node (outdegree 0). The algorithm first builds a reverse graph (edges reversed) and computes the outdegree for each node. All nodes with outdegree 0 (terminal nodes) are added to a queue and marked safe. Then, while processing nodes from the queue, for each predecessor in the reverse graph, its outdegree is decremented; if it becomes 0, that predecessor is also safe and added to the queue. This process effectively removes safe nodes from the graph in reverse topological order. Finally, all nodes marked safe are collected and returned as a sorted list.
+
+class Solution {
+    public List<Integer> eventualSafeNodes(int[][] graph)  {
+        int n = graph.length;
+        List<List<Integer>> reverse = new ArrayList<>();
+        for(int i = 0; i <n; i++){
+            reverse.add(new ArrayList<>());
+        }
+        int[] outdegree = new int[n];
+        for(int i = 0; i < n; i++){
+            outdegree[i] = graph[i].length;
+            for(int nbr : graph[i]) {
+                reverse.get(nbr).add(i);
+            }
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        for(int i = 0; i<n; i++){
+            if(outdegree[i] == 0){
+                queue.offer(i);
+            }
+        }
+        boolean[] safe = new boolean[n];
+        while(!queue.isEmpty()){
+            int node = queue.poll();
+            safe[node] = true;
+            for(int prev : reverse.get(node)){
+            outdegree[prev]--;
+            if(outdegree[prev] == 0){
+                queue.offer(prev);
+                }
+            }
+        }
+        List<Integer> ans = new ArrayList<>();
+        for(int i = 0; i<n; i++){
+            if(safe[i]){
+                ans.add(i);
+            }
+        }
+        return ans;
+    }
+}
