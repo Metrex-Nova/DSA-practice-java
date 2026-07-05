@@ -1,0 +1,32 @@
+This code finds all eventual safe nodes in a directed graph using DFS with three-state coloring for cycle detection. A node is safe if all paths starting from it eventually reach a terminal node (no outgoing edges) without encountering a cycle. The state array tracks three states: 0 = unvisited, 1 = visiting (currently in the recursion stack), and 2 = fully processed and safe. For each node, DFS is performed: if a node in state 1 is encountered, a cycle is detected and false is returned (unsafe); if a node in state 2 is found, it's already proven safe; otherwise, the node is marked 1, recursively explores all neighbors, and if any neighbor is unsafe, returns false; after all neighbors are processed safely, the node is marked 2 and true is returned. Finally, all nodes marked safe (state 2) are collected and returned in ascending order.
+
+
+class Solution {
+    public List<Integer> eventualSafeNodes(int[][] graph){
+        int n = graph.length;
+        int[] state = new int[n];
+        List<Integer> ans = new ArrayList<>();
+        for(int i = 0; i<n ;i++){
+            if(dfs(i, graph, state)){
+                ans.add(i);
+            }
+        }
+        return ans;
+    }
+    public boolean dfs(int node, int[][] graph, int[] state){
+        if(state[node] == 2){
+            return true;
+        }
+        if(state[node] == 1){
+            return false;
+        }
+        state[node] = 1;
+        for(int nbr : graph[node]){
+            if(!dfs(nbr, graph, state)){
+                return false;
+            }
+        }
+        state[node] = 2;
+        return true;
+    }
+}
