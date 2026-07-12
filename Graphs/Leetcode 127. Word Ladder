@@ -1,0 +1,37 @@
+This code solves LeetCode 127: "Word Ladder", which finds the shortest transformation sequence from beginWord to endWord using BFS. Each transformation changes exactly one letter, and every intermediate word must exist in wordList. The algorithm first converts wordList to a HashSet for O(1) lookups and checks if endWord is present (if not, returns 0). BFS starts from beginWord at level 1, and for each word, it generates all possible one-letter variations by iterating through each character position and replacing it with letters 'a' to 'z'. If a generated word exists in the set, it's added to the queue and removed from the set (to prevent revisiting). When endWord is reached, the current level is returned; if BFS exhausts without finding endWord, 0 is returned.
+
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Set<String> wordSet = new HashSet<>(wordList);
+        if(!wordSet.contains(endWord)) {
+            return 0;
+        }
+        int level = 1;
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(beginWord);
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            for(int i = 0 ; i<size; i++){
+                String current = queue.poll();
+                if(current.equals(endWord)) {
+                    return level;
+                }
+                char[] chars = current.toCharArray();
+                for(int j = 0; j<chars.length; j++){
+                    char orignal = chars[j];
+                    for(char c = 'a'; c <= 'z'; c++) {
+                        chars[j] = c;
+                        String newWord = new String(chars);
+                        if(wordSet.contains(newWord)) {
+                            queue.offer(newWord);
+                            wordSet.remove(newWord);
+                        }
+                    }
+                    chars[j] = orignal;
+                }
+            }
+            level++;
+        }
+        return 0;
+    }
+}
