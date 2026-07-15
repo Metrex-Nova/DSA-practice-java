@@ -1,0 +1,35 @@
+This code solves the "House Robber II" problem (circular houses) using dynamic programming. It defines a helper method LinearRob that computes the maximum loot for a linear segment of houses from start to end-1 using the standard recurrence dp[i] = max(dp[i-1], nums[i] + dp[i-2]). The main rob method handles base cases for 0, 1, and 2 houses, then returns the maximum of two scenarios: either exclude the last house (rob houses 0 to n-2) or exclude the first house (rob houses 1 to n-1). This ensures the circular constraint (first and last houses cannot both be robbed) is satisfied.
+
+Time Complexity: O(n) — two linear passes of O(n) each, so overall O(n).
+Space Complexity: O(n) — due to the dp array used in each LinearRob call (though this can be optimized to O(1) with two variables).
+
+class Solution {
+    public int LinearRob(int[] nums, int start, int end){
+        if(start == end) {
+            return nums[start];
+        }
+        int[] dp = new int[nums.length];
+        dp[start] = nums[start];
+        dp[start + 1] = Math.max(nums[start], nums[start + 1]);
+        
+        for(int i = start + 2; i < end; i++) {
+            dp[i] = Math.max(dp[i-1], (nums[i] + dp[i-2]));
+        }
+
+        return dp[end - 1];
+    }
+    public int rob(int[] nums) {
+        int n = nums.length;
+        if(n == 0) {
+            return 0;
+        }
+        if(n == 1) {
+            return nums[0];
+        }
+        if(n == 2) {
+            return Math.max(nums[0], nums[1]);
+        }
+        int[] dp = new int[n];
+        return Math.max(LinearRob(nums, 0, n - 1), LinearRob(nums, 1, n ));
+    }
+}
