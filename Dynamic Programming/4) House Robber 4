@@ -1,0 +1,39 @@
+This code solves LeetCode 2560: "House Robber IV", which asks for the minimum capability (maximum amount robbed from any single house) needed to rob at least k non-adjacent houses. The solution uses binary search on the capability value. The search range is from the minimum to the maximum value in nums. For each mid capability, the helper canRob greedily counts how many houses can be robbed without adjacency: it iterates through nums; if the current house value ≤ capability, it robs it, increments the count, and skips the next house (i += 2); otherwise, it moves to the next house (i++). This greedy approach yields the maximum number of houses that can be robbed with a given capability. If that count ≥ k, the capability is feasible, so the search moves left (high = mid); otherwise, it moves right (low = mid + 1). Finally, low is the minimum feasible capability.
+
+Time Complexity: O(n log max(nums)) — binary search over the value range (max-min) with each check O(n).
+Space Complexity: O(1) — only a few variables used.
+
+class Solution {
+    public int minCapability(int[] nums, int k) {
+        int low = nums[0];
+        int high = nums[0];
+        for(int num : nums) {
+            low = Math.min(num, low);
+            high = Math.max(num, high);
+        }
+        while(low < high) {
+            int mid = low + (high - low) / 2;
+            if(canRob(nums, k, mid)) {
+                high = mid;
+            }
+            else{
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+    private boolean canRob(int[] nums, int k, int capability) {
+        int count = 0;
+        int i = 0;
+        while(i < nums.length){
+            if(nums[i] <= capability) {
+                count++;
+                i = i + 2;
+            } else{
+                i++;
+            }
+        }
+        return count >= k;
+    }
+}
+
