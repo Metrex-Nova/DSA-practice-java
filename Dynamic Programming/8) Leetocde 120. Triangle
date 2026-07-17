@@ -1,0 +1,24 @@
+This code computes the minimum path sum from the top to the bottom of a triangle (as in LeetCode 120, "Triangle"). It uses bottom-up DP with a 2D table. The last row of the dp table is initialized with the values from the bottom row of the triangle. Starting from the second-to-last row and moving upward, for each cell (i, j), it computes dp[i][j] = triangle.get(i).get(j) + Math.min(dp[i+1][j], dp[i+1][j+1]), representing the minimum sum from that cell to the bottom by choosing the smaller of the two possible downward paths. Finally, dp[0][0] gives the minimum total path sum from the top of the triangle.
+
+Time Complexity: O(n²) — processes each cell in the triangle once.
+Space Complexity: O(n²) — for the DP table (though this can be optimized to O(n) with a 1D array).
+
+
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int n = triangle.size();
+        int[][] dp = new int[n][n];
+        for(int i = 0; i<n; i++){
+            dp[n-1][i] = triangle.get(n-1).get(i);
+        }
+        for(int i = n-2; i>=0; i--) {
+            for(int j = 0; j<=i; j++) {
+                dp[i][j] = triangle.get(i).get(j) + Math.min(dp[i+1][j], dp[i+1][j+1]);
+            }
+        }
+        return dp[0][0];
+    }
+}
+
+
+
