@@ -1,0 +1,18 @@
+This code solves LeetCode 746: "Min Cost Climbing Stairs", which finds the minimum cost to reach the top of a staircase, where you can start from either step 0 or step 1, and can climb one or two steps at a time. It uses a bottom-up DP array where dp[i] represents the minimum cost to reach step i. The base cases are dp[0] = cost[0] and dp[1] = cost[1] (since you can start at either step). For each subsequent step i, the recurrence is dp[i] = cost[i] + Math.min(dp[i-1], dp[i-2]), meaning you pay the cost at step i and add the cheaper way to reach it from either one or two steps behind. Since the top is beyond the last step, the answer is the minimum of reaching the last step (dp[n-1]) or the second-to-last step (dp[n-2]), as you can step over the top from either.
+
+Time Complexity: O(n) — one pass through the array.
+Space Complexity: O(n) — for the DP array (can be optimized to O(1) with two variables).
+
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int n = cost.length;
+        int[] dp = new int[n];
+        dp[0] = cost[0];
+        dp[1] = cost[1];
+        for(int i = 2; i<n; i++){
+            dp[i] = cost[i] + Math.min(dp[i-1], dp[i-2]);
+        }
+        return Math.min(dp[n-1], dp[n-2]);
+
+    }
+}
